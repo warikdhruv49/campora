@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-base-900 text-txt-primary font-sans;
+  }
+
+  ::selection {
+    @apply bg-brand/25 text-white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-stroke-strong rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-txt-muted;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand/60 ring-offset-1 ring-offset-base-900;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-base-800 border border-stroke rounded-xl shadow-panel;
+  }
+
+  .num {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  .skeleton {
+    @apply bg-gradient-to-r from-base-750 via-base-700 to-base-750 bg-[length:400px_100%] animate-shimmer rounded-md;
+  }
+
+  .label-xs {
+    @apply text-2xs font-semibold uppercase tracking-[0.14em] text-txt-muted;
+  }
+
+  .input-base {
+    @apply w-full bg-base-850 border border-stroke rounded-lg px-3 py-2.5 text-sm text-txt-primary
+      placeholder:text-txt-muted transition-colors
+      hover:border-stroke-strong focus:border-brand/70 focus:ring-1 focus:ring-brand/40 outline-none;
+  }
+}

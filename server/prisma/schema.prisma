@@ -1,0 +1,205 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+  CASH
+  CREDIT_CARD
+  INVESTMENT
+  DIGITAL_WALLET
+  OTHER
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+enum Frequency {
+  WEEKLY
+  MONTHLY
+  YEARLY
+  CUSTOM
+}
+
+enum AuthTokenKind {
+  VERIFY_EMAIL
+  PASSWORD_RESET
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  passwordHash  String?
+  googleId      String?  @unique
+  avatar        String?
+  emailVerified Boolean  @default(false)
+  currency      String   @default("INR")
+  studentType   String?
+  monthlyMoney  Decimal? @db.Decimal(12, 2)
+  mainGoal      String?
+  monthlyBudget Decimal? @db.Decimal(18, 2)
+  onboarded     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  accounts     Account[]
+  transactions Transaction[]
+  categories   Category[]
+  budgets      Budget[]
+  goals        SavingsGoal[]
+  recurring    RecurringTransaction[]
+  authTokens   AuthToken[]
+}
+
+model Account {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  type        AccountType
+  institution String?
+  balance     Decimal     @default(0) @db.Decimal(18, 2)
+  currency    String      @default("INR")
+  color       String      @default("#00d492")
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  transactions        Transaction[] @relation("AccountTransactions")
+  incomingTransfers   Transaction[] @relation("TransferDestination")
+  recurringRules      RecurringTransaction[]
+
+  @@index([userId, isActive])
+  @@index([userId, type])
+}
+
+model Category {
+  id        String          @id @default(cuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  type      TransactionType
+  color     String          @default("#4d8dff")
+  icon      String?
+  isDefault Boolean         @default(false)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  transactions Transaction[]
+  budget       Budget?
+  recurringRules RecurringTransaction[]
+
+  @@unique([userId, name, type])
+  @@index([userId, type])
+}
+
+model Budget {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId String   @unique
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  amount     Decimal  @db.Decimal(18, 2)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model SavingsGoal {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  targetAmount Decimal   @db.Decimal(18, 2)
+  savedAmount  Decimal   @default(0) @db.Decimal(18, 2)
+  targetDate   DateTime?
+  color        String    @default("#00d492")
+  isArchived   Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([userId, isArchived])
+}
+
+model RecurringTransaction {
+  id           String            @id @default(cuid())
+  userId       String
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId    String
+  account      Account           @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  categoryId   String?
+  category     Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  type         TransactionType
+  amount       Decimal           @db.Decimal(18, 2)
+  currency     String            @default("INR")
+  merchant     String?
+  description  String?
+  frequency    Frequency         @default(MONTHLY)
+  customDays   Int?
+  nextDate     DateTime
+  lastRunAt    DateTime?
+  autoCreate   Boolean           @default(true)
+  isActive     Boolean           @default(true)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([userId, nextDate])
+  @@index([accountId])
+}
+
+model AuthToken {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      AuthTokenKind
+  tokenHash String        @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime      @default(now())
+
+  @@index([userId, kind])
+}
+
+model Transaction {
+  id                String            @id @default(cuid())
+  userId            String
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId         String
+  account           Account           @relation("AccountTransactions", fields: [accountId], references: [id], onDelete: Cascade)
+  transferAccountId String?
+  transferAccount   Account?          @relation("TransferDestination", fields: [transferAccountId], references: [id], onDelete: SetNull)
+  categoryId        String?
+  category          Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  type              TransactionType
+  amount            Decimal           @db.Decimal(18, 2)
+  currency          String            @default("INR")
+  merchant          String?
+  description       String?
+  reference         String?
+  status            TransactionStatus @default(COMPLETED)
+  transactionDate   DateTime
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([userId, transactionDate])
+  @@index([userId, type, status])
+  @@index([userId, categoryId])
+  @@index([accountId, transactionDate])
+}
