@@ -16,6 +16,10 @@ export default function AuthFeatureStrip() {
         categories, monitor monthly spending, understand cash flow and build
         better saving habits — all in one personal finance dashboard.
       </p>
+      <p className="mt-2.5 text-xs leading-relaxed text-txt-secondary">
+        Your data stays private with secure, encrypted accounts — and CAMPORA
+        is completely free for students.
+      </p>
       <ul className="mt-5 space-y-4">
         {FEATURES.map(({ icon: Icon, title, text }) => (
           <li key={title} className="flex items-start gap-3">
@@ -29,6 +33,17 @@ export default function AuthFeatureStrip() {
           </li>
         ))}
       </ul>
+      <p className="mt-5 pt-4 border-t border-stroke text-2xs text-txt-muted">
+        Charts powered by{' '}
+        <a
+          href="https://www.tradingview.com/lightweight-charts/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-txt-secondary underline decoration-stroke underline-offset-2"
+        >
+          TradingView Lightweight Charts
+        </a>
+      </p>
     </section>
   );
 }

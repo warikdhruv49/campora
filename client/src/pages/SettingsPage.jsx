@@ -27,6 +27,18 @@ export default function SettingsPage() {
       <PreferencesCard user={user} onUpdate={updateUser} />
       <SecurityCard />
       <DataCard user={user} toast={toast} />
+
+      <p className="pt-1 pb-2 text-center text-2xs text-txt-muted">
+        Charts powered by{' '}
+        <a
+          href="https://www.tradingview.com/lightweight-charts/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-txt-secondary underline decoration-stroke underline-offset-2"
+        >
+          TradingView Lightweight Charts
+        </a>
+      </p>
     </div>
   );
 }

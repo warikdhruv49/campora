@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { ToastProvider } from './components/ui/Toast.jsx';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
 import './styles/index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(

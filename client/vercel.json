@@ -1,7 +1,22 @@
 {
+  "trailingSlash": false,
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
     { "source": "/index.php", "destination": "/", "permanent": true }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/register", "destination": "/index.html" },
+    { "source": "/forgot-password", "destination": "/index.html" },
+    { "source": "/reset-password", "destination": "/index.html" },
+    { "source": "/verify-email", "destination": "/index.html" },
+    { "source": "/dashboard", "destination": "/index.html" },
+    { "source": "/transactions", "destination": "/index.html" },
+    { "source": "/accounts", "destination": "/index.html" },
+    { "source": "/budgets", "destination": "/index.html" },
+    { "source": "/goals", "destination": "/index.html" },
+    { "source": "/recurring", "destination": "/index.html" },
+    { "source": "/categories", "destination": "/index.html" },
+    { "source": "/settings", "destination": "/index.html" }
+  ]
 }

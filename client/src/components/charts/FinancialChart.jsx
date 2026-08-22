@@ -7,7 +7,8 @@ const DEFAULT_OPTIONS = {
     background: { type: 'solid', color: 'transparent' },
     textColor: '#5c6878',
     fontSize: 11,
-    fontFamily: "'JetBrains Mono', monospace",
+    fontFamily: "'JetBrains Mono Variable', 'JetBrains Mono', monospace",
+    attributionLogo: false,
   },
   grid: {
     vertLines: { color: 'rgba(148, 160, 176, 0.05)' },
@@ -16,6 +17,7 @@ const DEFAULT_OPTIONS = {
   rightPriceScale: {
     borderColor: '#1c2530',
     scaleMargins: { top: 0.12, bottom: 0.08 },
+    minimumWidth: 64,
   },
   timeScale: {
     borderColor: '#1c2530',
