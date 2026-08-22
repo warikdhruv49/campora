@@ -109,13 +109,6 @@ export default function LoginPage() {
             </Link>
           </p>
         </div>
-
-        <div className="mt-5 panel px-4 py-3">
-          <p className="label-xs mb-1.5">Demo Access</p>
-          <p className="text-2xs text-txt-secondary num">
-            demo@campora.app · Demo@1234
-          </p>
-        </div>
       </div>
     </div>
   );
