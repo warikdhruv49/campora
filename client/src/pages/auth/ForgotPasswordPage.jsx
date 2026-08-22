@@ -6,8 +6,14 @@ import Button from '../../components/ui/Button.jsx';
 import { Input } from '../../components/ui/Input.jsx';
 import { authService } from '../../services/auth.service.js';
 import { apiError } from '../../services/apiClient.js';
+import { usePageMeta } from '../../hooks/usePageMeta.js';
 
 export default function ForgotPasswordPage() {
+  usePageMeta({
+    title: 'Reset password · CAMPORA',
+    description: 'Recover access to your CAMPORA student finance dashboard.',
+    canonicalPath: '/forgot-password',
+  });
   const [email, setEmail] = useState('');
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');

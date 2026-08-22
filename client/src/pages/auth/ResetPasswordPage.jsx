@@ -6,8 +6,10 @@ import Button from '../../components/ui/Button.jsx';
 import { Input } from '../../components/ui/Input.jsx';
 import { authService } from '../../services/auth.service.js';
 import { apiError } from '../../services/apiClient.js';
+import { usePageMeta } from '../../hooks/usePageMeta.js';
 
 export default function ResetPasswordPage() {
+  usePageMeta({ title: 'Set new password · CAMPORA', noindex: true });
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token') || '';
   const navigate = useNavigate();

@@ -6,8 +6,13 @@ import OnboardingModal from '../onboarding/OnboardingModal.jsx';
 import { useState } from 'react';
 import { UIProvider } from '../../context/UIContext.jsx';
 import { cn } from '../../utils/cn.js';
+import { usePageMeta } from '../../hooks/usePageMeta.js';
 
 export default function AppLayout() {
+  usePageMeta({
+    title: 'Dashboard · CAMPORA — Student Personal Finance Tracker',
+    noindex: true,
+  });
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem('campora_sidebar') === 'collapsed');
   const [mobileOpen, setMobileOpen] = useState(false);
 

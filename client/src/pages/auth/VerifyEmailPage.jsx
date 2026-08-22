@@ -3,8 +3,10 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { BadgeCheck, CircleX, Loader2 } from 'lucide-react';
 import Logo from '../../components/layout/Logo.jsx';
 import { authService } from '../../services/auth.service.js';
+import { usePageMeta } from '../../hooks/usePageMeta.js';
 
 export default function VerifyEmailPage() {
+  usePageMeta({ title: 'Verify email · CAMPORA', noindex: true });
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token') || '';
   const [state, setState] = useState(token ? 'verifying' : 'invalid');

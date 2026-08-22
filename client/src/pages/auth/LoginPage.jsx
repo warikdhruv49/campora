@@ -5,10 +5,18 @@ import Logo from '../../components/layout/Logo.jsx';
 import Button from '../../components/ui/Button.jsx';
 import { Input } from '../../components/ui/Input.jsx';
 import GoogleButton from '../../components/ui/GoogleButton.jsx';
+import AuthFeatureStrip from '../../components/auth/AuthFeatureStrip.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { apiError } from '../../services/apiClient.js';
+import { usePageMeta } from '../../hooks/usePageMeta.js';
 
 export default function LoginPage() {
+  usePageMeta({
+    title: 'Sign in · CAMPORA — Student Personal Finance Tracker',
+    description:
+      'Sign in to CAMPORA to track income, expenses, accounts and savings in your personal student finance dashboard.',
+    canonicalPath: '/login',
+  });
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -109,6 +117,8 @@ export default function LoginPage() {
             </Link>
           </p>
         </div>
+
+        <AuthFeatureStrip />
       </div>
     </div>
   );

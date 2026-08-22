@@ -4,10 +4,18 @@ import Logo from '../../components/layout/Logo.jsx';
 import Button from '../../components/ui/Button.jsx';
 import { Input } from '../../components/ui/Input.jsx';
 import GoogleButton from '../../components/ui/GoogleButton.jsx';
+import AuthFeatureStrip from '../../components/auth/AuthFeatureStrip.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { apiError } from '../../services/apiClient.js';
+import { usePageMeta } from '../../hooks/usePageMeta.js';
 
 export default function RegisterPage() {
+  usePageMeta({
+    title: 'Create account · CAMPORA — Student Personal Finance Tracker',
+    description:
+      'Create a free CAMPORA account to manage student finances: track expenses, organize accounts and build better saving habits.',
+    canonicalPath: '/register',
+  });
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' });
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
@@ -133,6 +141,8 @@ export default function RegisterPage() {
             </Link>
           </p>
         </div>
+
+        <AuthFeatureStrip />
       </div>
     </div>
   );

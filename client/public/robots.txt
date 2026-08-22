@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /transactions
+Disallow: /accounts
+Disallow: /budgets
+Disallow: /goals
+Disallow: /recurring
+Disallow: /categories
+Disallow: /settings
+Disallow: /reset-password
+Disallow: /verify-email
+
+Sitemap: https://campora-seven.vercel.app/sitemap.xml
