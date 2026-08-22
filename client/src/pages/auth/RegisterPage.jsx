@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Logo from '../../components/layout/Logo.jsx';
 import Button from '../../components/ui/Button.jsx';
 import { Input } from '../../components/ui/Input.jsx';
 import GoogleButton from '../../components/ui/GoogleButton.jsx';
-import AuthFeatureStrip from '../../components/auth/AuthFeatureStrip.jsx';
+import AuthPageLayout, { AuthCard, AuthAlert, AuthSteps, AuthPoints } from '../../components/auth/AuthPageLayout.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { apiError } from '../../services/apiClient.js';
 import { usePageMeta } from '../../hooks/usePageMeta.js';
@@ -16,6 +15,7 @@ export default function RegisterPage() {
       'Create a free CAMPORA account to manage student finances: track expenses, organize accounts and build better saving habits.',
     canonicalPath: '/register',
   });
+
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' });
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
@@ -56,94 +56,114 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-900 p-4 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand/8 blur-[120px] rounded-full pointer-events-none" />
+    <AuthPageLayout
+      headline={
+        <>
+          Create your <span className="text-gain">CAMPORA</span> account
+        </>
+      }
+      supporting="Create a fresh account and start tracking your student finances in one place."
+      aside={
+        <>
+          <AuthSteps
+            title="What happens after signup?"
+            steps={[
+              'Create your account',
+              'Add your first bank, wallet or cash account',
+              'Add income and expenses',
+              'View your financial dashboard',
+            ]}
+          />
+          <AuthPoints
+            title="Why students choose CAMPORA"
+            points={[
+              'One dashboard for your money',
+              'Student-friendly expense tracking',
+              'Monthly cash-flow overview',
+              'Private personal finance data',
+            ]}
+          />
+        </>
+      }
+    >
+      <AuthCard>
+        <h2 className="text-2xl font-semibold tracking-tight text-txt-primary">Get started</h2>
+        <p className="mt-1.5 text-sm text-txt-secondary">
+          Your private space to manage income, expenses, accounts and savings.
+        </p>
 
-      <div className="w-full max-w-sm relative animate-slideUp">
-        <div className="flex justify-center mb-8">
-          <Logo size="large" />
-        </div>
+        <form onSubmit={handleSubmit} className="mt-7 space-y-5" noValidate>
+          <AuthAlert>{serverError}</AuthAlert>
 
-        <div className="panel p-6">
-          <h1 className="text-lg font-semibold text-txt-primary">Create your account</h1>
-          <p className="mt-1 text-xs text-txt-secondary">Set up your finance terminal in under a minute.</p>
-
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4" noValidate>
-            {serverError && (
-              <div className="rounded-lg border border-loss/40 bg-loss-dim px-3.5 py-2.5 text-xs text-loss" role="alert">
-                {serverError}
-              </div>
-            )}
-            <Input
-              label="Full name"
-              name="name"
-              autoComplete="name"
-              placeholder="Arjun Mehta"
-              value={form.name}
-              onChange={set('name')}
-              error={errors.name}
-              required
-            />
-            <Input
-              label="Email"
-              type="email"
-              name="email"
-              autoComplete="email"
-              placeholder="you@example.com"
-              value={form.email}
-              onChange={set('email')}
-              error={errors.email}
-              required
-            />
-            <Input
-              label="Password"
-              type="password"
-              name="password"
-              autoComplete="new-password"
-              placeholder="Min 8 chars, letter + number"
-              value={form.password}
-              onChange={set('password')}
-              error={errors.password}
-              hint="Used to secure your financial data."
-              required
-            />
-            <Input
-              label="Confirm password"
-              type="password"
-              name="confirm"
-              autoComplete="new-password"
-              placeholder="Repeat password"
-              value={form.confirm}
-              onChange={set('confirm')}
-              error={errors.confirm}
-              required
-            />
-            <Button type="submit" loading={loading} className="w-full">
-              Create Account
-            </Button>
-          </form>
-
-          <div className="my-4 flex items-center gap-3">
-            <span className="h-px flex-1 bg-stroke" />
-            <span className="text-2xs text-txt-muted">or</span>
-            <span className="h-px flex-1 bg-stroke" />
-          </div>
-
-          <GoogleButton
-            onSuccess={() => navigate('/', { replace: true })}
-            onError={setServerError}
+          <Input
+            label="Full name"
+            name="name"
+            autoComplete="name"
+            placeholder="Arjun Mehta"
+            value={form.name}
+            onChange={set('name')}
+            error={errors.name}
+            className="h-11"
+            required
+          />
+          <Input
+            label="Email"
+            type="email"
+            name="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            value={form.email}
+            onChange={set('email')}
+            error={errors.email}
+            className="h-11"
+            required
+          />
+          <Input
+            label="Password"
+            type="password"
+            name="password"
+            autoComplete="new-password"
+            placeholder="Min 8 chars, letter + number"
+            value={form.password}
+            onChange={set('password')}
+            error={errors.password}
+            hint="Used to keep your financial data secure."
+            className="h-11"
+            required
+          />
+          <Input
+            label="Confirm password"
+            type="password"
+            name="confirm"
+            autoComplete="new-password"
+            placeholder="Repeat password"
+            value={form.confirm}
+            onChange={set('confirm')}
+            error={errors.confirm}
+            className="h-11"
+            required
           />
 
-          <p className="mt-5 text-center text-xs text-txt-secondary">
-            Already have an account?{' '}
-            <Link to="/login" className="text-gain hover:underline font-medium">
-              Sign in
-            </Link>
-          </p>
+          <Button type="submit" loading={loading} size="lg" className="h-12 w-full text-sm tracking-wide active:scale-[0.99]">
+            Create Account
+          </Button>
+        </form>
+
+        <div className="my-6 flex items-center gap-3">
+          <span className="h-px flex-1 bg-stroke" />
+          <span className="text-2xs uppercase tracking-widest text-txt-muted">or</span>
+          <span className="h-px flex-1 bg-stroke" />
         </div>
 
-        <AuthFeatureStrip />
-      </div>
-    </div>
+        <GoogleButton onSuccess={() => navigate('/', { replace: true })} onError={setServerError} />
+
+        <p className="mt-7 border-t border-stroke pt-5 text-center text-xs text-txt-secondary">
+          Already have an account?{' '}
+          <Link to="/login" className="font-semibold text-gain transition-colors hover:text-[#00e6a2] hover:underline underline-offset-2">
+            Sign in
+          </Link>
+        </p>
+      </AuthCard>
+    </AuthPageLayout>
   );
 }
